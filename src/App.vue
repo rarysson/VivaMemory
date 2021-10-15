@@ -3,6 +3,7 @@
     <component
       :is="state.currentComponent"
       :steps="state.steps"
+      :difficulty="state.currentLevel"
       @level-chosen="handleLevelChosen"
       @replay="replay"
     />
@@ -12,19 +13,23 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 
+import { Difficulties } from "./interfaces/types";
+
 import Home from "./components/Home.vue";
 import Victory from "./components/Victory.vue";
+import Level from "./components/Level.vue";
 
-type Components = "Home" | "Victory";
+type Components = "Home" | "Victory" | "Level";
 
 type State = {
   currentComponent: Components;
   steps: number;
+  currentLevel: Difficulties;
 };
 
 interface ISetup {
   state: State;
-  handleLevelChosen: () => void;
+  handleLevelChosen: (level: Difficulties) => void;
   replay: () => void;
 }
 
@@ -33,17 +38,20 @@ export default defineComponent({
 
   components: {
     Home,
+    Level,
     Victory
   },
 
   setup(): ISetup {
     const state = reactive<State>({
-      currentComponent: "Home",
-      steps: 0
+      currentComponent: "Level",
+      steps: 0,
+      currentLevel: "easy"
     });
 
-    function handleLevelChosen() {
-      state.currentComponent = "Victory";
+    function handleLevelChosen(level: Difficulties) {
+      state.currentLevel = level;
+      state.currentComponent = "Level";
     }
 
     function replay(): void {

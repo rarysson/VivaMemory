@@ -17,10 +17,10 @@
 <script lang="ts">
 import { defineComponent, SetupContext } from "@vue/runtime-core";
 
-type Level = "easy" | "medium" | "hard";
+import { Difficulties } from "../interfaces/types";
 
 interface ISetup {
-  selectLevel: (level: Level) => void;
+  selectLevel: (level: Difficulties) => void;
 }
 
 export default defineComponent({
@@ -29,7 +29,7 @@ export default defineComponent({
   emits: ["level-chosen"],
 
   setup(_, { emit }: SetupContext): ISetup {
-    function selectLevel(level: Level) {
+    function selectLevel(level: Difficulties) {
       emit("level-chosen", level);
     }
 

@@ -12,6 +12,15 @@ Um jogo para testar sua memória. Projeto baseado no [desafio da Viva Decora](ht
 * [Jest](https://jestjs.io/)
 * [Cypress](https://www.cypress.io/)
 
+## Rodando o App
+
+Para usar localmente basta clonar o projeto, e dentro da pasta rodar os seguintes comandos:
+
+```
+npm i
+npm run serve
+```
+
 ## Licença
 
 [MIT](LICENSE)
