@@ -38,7 +38,9 @@ import {
   ComputedRef,
   defineComponent,
   PropType,
-  reactive
+  reactive,
+  SetupContext,
+  watchEffect
 } from "@vue/runtime-core";
 
 import { Difficulties } from "../interfaces/types";
@@ -72,11 +74,13 @@ export default defineComponent({
     }
   },
 
+  emits: ["victory"],
+
   components: {
     Card
   },
 
-  setup(props): ISetup {
+  setup(props, { emit }: SetupContext): ISetup {
     const state = reactive<State>({
       cards: [],
       steps: 0,
@@ -146,7 +150,10 @@ export default defineComponent({
         if (cardA.emoji === cardB.emoji) {
           cardA.state = "correct";
           cardB.state = "correct";
-          state.correctCards++;
+
+          setTimeout(() => {
+            state.correctCards++;
+          }, 1000);
         } else {
           cardA.state = "incorrect";
           cardB.state = "incorrect";
@@ -160,6 +167,12 @@ export default defineComponent({
         state.chosenCards = [];
       }
     }
+
+    watchEffect(() => {
+      if (state.correctCards === maximumUniqueCards.value) {
+        emit("victory", state.steps);
+      }
+    });
 
     randomizeCards();
 

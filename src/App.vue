@@ -6,6 +6,7 @@
       :difficulty="state.currentLevel"
       @level-chosen="handleLevelChosen"
       @replay="replay"
+      @victory="handleVictory"
     />
   </transition>
 </template>
@@ -31,6 +32,7 @@ interface ISetup {
   state: State;
   handleLevelChosen: (level: Difficulties) => void;
   replay: () => void;
+  handleVictory: (steps: number) => void;
 }
 
 export default defineComponent({
@@ -44,7 +46,7 @@ export default defineComponent({
 
   setup(): ISetup {
     const state = reactive<State>({
-      currentComponent: "Level",
+      currentComponent: "Home",
       steps: 0,
       currentLevel: "easy"
     });
@@ -59,10 +61,16 @@ export default defineComponent({
       state.steps = 0;
     }
 
+    function handleVictory(steps: number): void {
+      state.steps = steps;
+      state.currentComponent = "Victory";
+    }
+
     return {
       state,
       handleLevelChosen,
-      replay
+      replay,
+      handleVictory
     };
   }
 });
