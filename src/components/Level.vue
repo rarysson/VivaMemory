@@ -112,9 +112,17 @@ export default defineComponent({
       return Math.floor(Math.random() * totalEmojis);
     }
 
+    const generatedIndexes: Array<number> = [];
+
     for (let i = 0; i < maximumUniqueCards.value; i++) {
-      const emojiIndex = getRandomEmojiIndex();
+      let emojiIndex: number;
       const magicNumber = i % maximumUniqueCards.value;
+
+      do {
+        emojiIndex = getRandomEmojiIndex();
+      } while (generatedIndexes.find((n) => n === emojiIndex));
+
+      generatedIndexes.push(emojiIndex);
 
       state.cards.push({
         emoji: emojis[emojiIndex],
@@ -278,7 +286,7 @@ footer {
   align-items: center;
   color: $color-white;
   font-size: 1.15rem;
-  margin-top: 50px;
+  margin-top: 30px;
 
   .current-level-display {
     font-weight: bold;

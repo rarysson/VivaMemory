@@ -2,6 +2,7 @@
   <div
     class="card"
     :class="{ 'as-blank': asBlank, [card.state]: !!card.state }"
+    ref="cardRef"
     @click="flipCard"
   >
     <div class="front">
@@ -19,12 +20,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, SetupContext } from "@vue/runtime-core";
+import {
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  Ref,
+  ref,
+  SetupContext
+} from "@vue/runtime-core";
 
 import { ICard } from "../interfaces/interfaces";
 
 interface ISetup {
   flipCard: () => void;
+  cardRef: Ref<HTMLDivElement | undefined>;
+  cardFontSize: Ref<string>;
 }
 
 export default defineComponent({
@@ -51,8 +62,30 @@ export default defineComponent({
       }
     }
 
+    const cardRef = ref<HTMLDivElement>();
+    const cardFontSize = ref<string>("100px");
+
+    const resizeObserver = new ResizeObserver(function (entries) {
+      const rect = entries[0].contentRect;
+
+      cardFontSize.value = `${(rect.width * 0.55).toFixed(2)}px`;
+    });
+
+    onMounted(() => {
+      cardFontSize.value = `${(cardRef.value!.offsetWidth * 0.55).toFixed(
+        2
+      )}px`;
+      resizeObserver.observe(cardRef.value!);
+    });
+
+    onBeforeUnmount(() => {
+      resizeObserver.unobserve(cardRef.value!);
+    });
+
     return {
-      flipCard
+      flipCard,
+      cardRef,
+      cardFontSize
     };
   }
 });
@@ -98,7 +131,7 @@ export default defineComponent({
       z-index: -1;
       display: grid;
       place-items: center;
-      font-size: clamp(16px, 20vw, 80px);
+      font-size: v-bind("cardFontSize");
     }
 
     .back {
