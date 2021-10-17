@@ -7,17 +7,22 @@
     <main>
       <div class="level-info">
         <p>{{ state.steps }} {{ stepsLabel }}</p>
-        <button>🔄</button>
+        <button @click="randomizeCards">🔄</button>
       </div>
 
-      <div class="cards-container" :class="{ [difficulty]: !!difficulty }">
+      <transition-group
+        class="cards-container"
+        :class="{ [difficulty]: !!difficulty }"
+        tag="div"
+        name="cards"
+      >
         <card
           v-for="card in state.cards"
           :key="card.key"
           :card="card"
           @flip-card="selectCard"
         />
-      </div>
+      </transition-group>
     </main>
 
     <footer>
@@ -108,20 +113,28 @@ export default defineComponent({
 
     for (let i = 0; i < maximumUniqueCards.value; i++) {
       const emojiIndex = getRandomEmojiIndex();
+      const magicNumber = i % maximumUniqueCards.value;
 
       state.cards.push({
         emoji: emojis[emojiIndex],
         state: "inactive",
-        key: `card - ${i}`
+        key: `card - ${i + magicNumber}`
       });
       state.cards.push({
         emoji: emojis[emojiIndex],
         state: "inactive",
-        key: `card - ${i + 1}`
+        key: `card - ${i + magicNumber + 1}`
       });
     }
 
     function randomizeCards(): void {
+      state.chosenCards = [];
+      state.steps = 0;
+      state.correctCards = 0;
+      state.cards.forEach((card) => {
+        card.state = "inactive";
+      });
+
       let shuffledCards = [...state.cards];
       let currentIndex = shuffledCards.length;
       let randomIndex;
@@ -270,5 +283,14 @@ footer {
       color: $btn-color-hard;
     }
   }
+}
+
+.cards-enter-active,
+.cards-leave-active {
+  transition: all 250ms;
+}
+
+.cards-move {
+  transition: transform 250ms;
 }
 </style>
