@@ -20,6 +20,7 @@
           v-for="card in state.cards"
           :key="card.key"
           :card="card"
+          :as-blank="card.key === 'blank'"
           @flip-card="selectCard"
         />
       </transition-group>
@@ -127,6 +128,14 @@ export default defineComponent({
       });
     }
 
+    if (props.difficulty === "medium") {
+      state.cards.splice(4, 0, {
+        emoji: "",
+        state: "inactive",
+        key: "blank"
+      });
+    }
+
     function randomizeCards(): void {
       state.chosenCards = [];
       state.steps = 0;
@@ -135,21 +144,28 @@ export default defineComponent({
         card.state = "inactive";
       });
 
-      let shuffledCards = [...state.cards];
-      let currentIndex = shuffledCards.length;
-      let randomIndex;
+      let currentIndex = state.cards.length;
 
       while (currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
+        const randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
 
-        [shuffledCards[currentIndex], shuffledCards[randomIndex]] = [
-          shuffledCards[randomIndex],
-          shuffledCards[currentIndex]
+        [state.cards[currentIndex], state.cards[randomIndex]] = [
+          state.cards[randomIndex],
+          state.cards[currentIndex]
         ];
       }
 
-      state.cards = shuffledCards;
+      if (props.difficulty === "medium") {
+        const blankIndex = state.cards.findIndex(
+          (card) => card.key === "blank"
+        );
+
+        [state.cards[blankIndex], state.cards[4]] = [
+          state.cards[4],
+          state.cards[blankIndex]
+        ];
+      }
     }
 
     function selectCard(card: ICard): void {

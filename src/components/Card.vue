@@ -7,7 +7,14 @@
     <div class="front">
       <p>{{ card.emoji }}</p>
     </div>
-    <div class="back"></div>
+    <div class="back">
+      <img
+        v-if="asBlank"
+        class="logo"
+        src="@/assets/images/logo.svg"
+        alt="vivamemory logo"
+      />
+    </div>
   </div>
 </template>
 
@@ -60,7 +67,22 @@ export default defineComponent({
   transform-style: preserve-3d;
   border-radius: 5px;
 
+  &.as-blank .back {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+
+    .logo {
+      width: 100%;
+      height: auto;
+      filter: invert(1);
+    }
+  }
+
   &:not(.as-blank) {
+    cursor: pointer;
+
     .front,
     .back {
       position: absolute;
