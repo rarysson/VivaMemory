@@ -11,7 +11,12 @@
       </div>
 
       <div class="cards-container" :class="{ [difficulty]: !!difficulty }">
-        <card v-for="i in 4" :key="i" :emoji-index="i" />
+        <card
+          v-for="card in state.cards"
+          :key="card.key"
+          :card="card"
+          @flip-card="selectCard"
+        />
       </div>
     </main>
 
@@ -37,18 +42,24 @@ import {
 } from "@vue/runtime-core";
 
 import { Difficulties } from "../interfaces/types";
+import { ICard } from "../interfaces/interfaces";
+import { emojis, totalEmojis } from "../services/emojis";
 
 import Card from "./Card.vue";
 
 type State = {
-  cards: Array<string>;
+  cards: Array<ICard>;
   steps: number;
+  chosenCards: Array<ICard>;
+  correctCards: number;
 };
 
 interface ISetup {
   state: State;
   stepsLabel: ComputedRef<string>;
   levelLabel: ComputedRef<string>;
+  randomizeCards: () => void;
+  selectCard: (card: ICard) => void;
 }
 
 export default defineComponent({
@@ -68,7 +79,9 @@ export default defineComponent({
   setup(props): ISetup {
     const state = reactive<State>({
       cards: [],
-      steps: 0
+      steps: 0,
+      chosenCards: [],
+      correctCards: 0
     });
 
     const stepsLabel = computed<string>(() =>
@@ -81,11 +94,81 @@ export default defineComponent({
         ? "Normal - 8"
         : "Difícil - 16"
     );
+    const maximumUniqueCards = computed<number>(() =>
+      props.difficulty === "easy" ? 2 : props.difficulty === "medium" ? 4 : 8
+    );
+
+    function getRandomEmojiIndex(): number {
+      return Math.floor(Math.random() * totalEmojis);
+    }
+
+    for (let i = 0; i < maximumUniqueCards.value; i++) {
+      const emojiIndex = getRandomEmojiIndex();
+
+      state.cards.push({
+        emoji: emojis[emojiIndex],
+        state: "inactive",
+        key: `card - ${i}`
+      });
+      state.cards.push({
+        emoji: emojis[emojiIndex],
+        state: "inactive",
+        key: `card - ${i + 1}`
+      });
+    }
+
+    function randomizeCards(): void {
+      let shuffledCards = [...state.cards];
+      let currentIndex = shuffledCards.length;
+      let randomIndex;
+
+      while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [shuffledCards[currentIndex], shuffledCards[randomIndex]] = [
+          shuffledCards[randomIndex],
+          shuffledCards[currentIndex]
+        ];
+      }
+
+      state.cards = shuffledCards;
+    }
+
+    function selectCard(card: ICard): void {
+      card.state = "active";
+      state.steps++;
+      state.chosenCards.push(card);
+
+      if (state.chosenCards.length === 2) {
+        const [cardA, cardB] = state.chosenCards;
+
+        if (cardA.emoji === cardB.emoji) {
+          cardA.state = "correct";
+          cardB.state = "correct";
+          state.correctCards++;
+        } else {
+          cardA.state = "incorrect";
+          cardB.state = "incorrect";
+
+          setTimeout(() => {
+            cardA.state = "inactive";
+            cardB.state = "inactive";
+          }, 2000);
+        }
+
+        state.chosenCards = [];
+      }
+    }
+
+    randomizeCards();
 
     return {
       state,
       stepsLabel,
-      levelLabel
+      levelLabel,
+      randomizeCards,
+      selectCard
     };
   }
 });

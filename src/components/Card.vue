@@ -1,33 +1,22 @@
 <template>
   <div
     class="card"
-    :class="{ 'as-blank': asBlank, 'flipped': state.isFlipped }"
+    :class="{ 'as-blank': asBlank, [card.state]: !!card.state }"
     @click="flipCard"
   >
     <div class="front">
-      <p>{{ currentEmoji }}</p>
+      <p>{{ card.emoji }}</p>
     </div>
     <div class="back"></div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  ComputedRef,
-  defineComponent,
-  reactive
-} from "@vue/runtime-core";
+import { defineComponent, PropType, SetupContext } from "@vue/runtime-core";
 
-import { emojis } from "../services/emojis";
-
-type State = {
-  isFlipped: boolean;
-};
+import { ICard } from "../interfaces/interfaces";
 
 interface ISetup {
-  state: State;
-  currentEmoji: ComputedRef<string>;
   flipCard: () => void;
 }
 
@@ -35,8 +24,8 @@ export default defineComponent({
   name: "Card",
 
   props: {
-    emojiIndex: {
-      type: Number,
+    card: {
+      type: Object as PropType<ICard>,
       required: true
     },
 
@@ -46,20 +35,16 @@ export default defineComponent({
     }
   },
 
-  setup(props): ISetup {
-    const state = reactive<State>({
-      isFlipped: false
-    });
+  emits: ["flip-card"],
 
-    const currentEmoji = computed<string>(() => emojis[props.emojiIndex]);
-
+  setup(props, { emit }: SetupContext): ISetup {
     function flipCard() {
-      state.isFlipped = !state.isFlipped;
+      if (!props.asBlank && props.card.state === "inactive") {
+        emit("flip-card", props.card);
+      }
     }
 
     return {
-      state,
-      currentEmoji,
       flipCard
     };
   }
@@ -73,6 +58,7 @@ export default defineComponent({
   height: 100%;
   transition: all 500ms;
   transform-style: preserve-3d;
+  border-radius: 5px;
 
   &:not(.as-blank) {
     .front,
@@ -97,10 +83,23 @@ export default defineComponent({
       background-image: $card-bg-pattern;
       background-color: $card-inactive;
       background-size: $card-bg-pattern-size;
-      border-radius: 5px;
     }
 
-    &.flipped {
+    &.inactive {
+      transform: rotateY(0deg) scaleX(-1);
+
+      .front {
+        z-index: -1;
+      }
+
+      .back {
+        z-index: 0;
+      }
+    }
+
+    &.active,
+    &.correct,
+    &.incorrect {
       transform: rotateY(180deg) scaleX(-1);
 
       .front {
@@ -110,6 +109,18 @@ export default defineComponent({
       .back {
         z-index: -1;
       }
+    }
+
+    &.active {
+      background-color: $card-active;
+    }
+
+    &.correct {
+      background-color: $card-correct;
+    }
+
+    &.incorrect {
+      background-color: $card-incorrect;
     }
   }
 }

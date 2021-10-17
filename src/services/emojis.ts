@@ -61,4 +61,4 @@ export const emojis = [
   "🦄"
 ];
 
-export const maxEmojiIndex = emojis.length - 1;
+export const totalEmojis = emojis.length;
