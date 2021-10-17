@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="level">
     <header>
       <img class="logo" src="@/assets/images/logo.svg" alt="vivamemory logo" />
     </header>
@@ -10,12 +10,17 @@
         <button>🔄</button>
       </div>
 
-      <div class="cards-container"></div>
+      <div class="cards-container" :class="{ [difficulty]: !!difficulty }">
+        <card v-for="i in 4" :key="i" :emoji-index="i" />
+      </div>
     </main>
 
     <footer>
       <p>Nível:</p>
-      <div class="current-level-display" :class="{ [difficulty]: difficulty }">
+      <div
+        class="current-level-display"
+        :class="{ [difficulty]: !!difficulty }"
+      >
         {{ levelLabel }}
       </div>
     </footer>
@@ -32,6 +37,8 @@ import {
 } from "@vue/runtime-core";
 
 import { Difficulties } from "../interfaces/types";
+
+import Card from "./Card.vue";
 
 type State = {
   cards: Array<string>;
@@ -52,6 +59,10 @@ export default defineComponent({
       type: String as PropType<Difficulties>,
       required: true
     }
+  },
+
+  components: {
+    Card
   },
 
   setup(props): ISetup {
@@ -81,13 +92,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  margin: 50px 0 25px;
+.level {
+  width: 75%;
+}
+
+header {
+  text-align: center;
+
+  .logo {
+    margin: 50px auto 25px;
+  }
 }
 
 main {
-  width: 80%;
-
   .level-info {
     display: flex;
     justify-content: space-between;
@@ -108,16 +125,31 @@ main {
 
   .cards-container {
     width: 100%;
-    height: 210px;
-    padding: 10px;
+    height: 225px;
+    padding: 15px;
     background-color: $color-white;
     border-radius: 5px;
     box-shadow: 4px 4px 1px $color-black;
+    display: grid;
+    gap: 15px;
+
+    &.easy {
+      grid-template-columns: repeat(2, minmax(90px, 1fr));
+    }
+
+    &.medium {
+      grid-template-columns: repeat(3, minmax(50px, 1fr));
+    }
+
+    &.hard {
+      grid-template-columns: repeat(4, minmax(30px, 1fr));
+    }
   }
 }
 
 footer {
   display: flex;
+  justify-content: center;
   align-items: center;
   color: $color-white;
   font-size: 1.15rem;

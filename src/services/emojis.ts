@@ -60,3 +60,5 @@ export const emojis = [
   "🦖",
   "🦄"
 ];
+
+export const maxEmojiIndex = emojis.length - 1;
