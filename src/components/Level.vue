@@ -238,6 +238,9 @@ header {
 }
 
 main {
+  max-width: 600px;
+  margin: 0 auto;
+
   .level-info {
     display: flex;
     justify-content: space-between;
@@ -258,7 +261,9 @@ main {
 
   .cards-container {
     width: 100%;
-    height: 225px;
+    height: 75vmin;
+    min-height: 225px;
+    max-height: 600px;
     padding: 15px;
     background-color: $color-white;
     border-radius: 5px;

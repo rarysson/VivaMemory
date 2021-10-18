@@ -64,22 +64,30 @@ export default defineComponent({
 
     const cardRef = ref<HTMLDivElement>();
     const cardFontSize = ref<string>("100px");
+    const hasResizeObserver = !!ResizeObserver;
 
-    const resizeObserver = new ResizeObserver(function (entries) {
-      const rect = entries[0].contentRect;
+    const resizeObserver = hasResizeObserver
+      ? new ResizeObserver(function (entries) {
+          const rect = entries[0].contentRect;
 
-      cardFontSize.value = `${(rect.width * 0.55).toFixed(2)}px`;
-    });
+          cardFontSize.value = `${(rect.width * 0.55).toFixed(2)}px`;
+        })
+      : null;
 
     onMounted(() => {
       cardFontSize.value = `${(cardRef.value!.offsetWidth * 0.55).toFixed(
         2
       )}px`;
-      resizeObserver.observe(cardRef.value!);
+
+      if (resizeObserver) {
+        resizeObserver.observe(cardRef.value!);
+      }
     });
 
     onBeforeUnmount(() => {
-      resizeObserver.unobserve(cardRef.value!);
+      if (resizeObserver) {
+        resizeObserver.unobserve(cardRef.value!);
+      }
     });
 
     return {
