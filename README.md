@@ -14,6 +14,8 @@ Um jogo para testar sua memória. Projeto baseado no [desafio da Viva Decora](ht
 
 ## Rodando o App
 
+Para usar online acesse o link: [VivaMemory](https://rarysson.github.io/VivaMemory/).
+
 Para usar localmente basta clonar o projeto, e dentro da pasta rodar os seguintes comandos:
 
 ```
