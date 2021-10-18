@@ -131,7 +131,7 @@ export default defineComponent({
       left: 0;
       width: 100%;
       height: 100%;
-      backface-visibility: hidden;
+      border-radius: 5px;
     }
 
     .front {
@@ -146,6 +146,7 @@ export default defineComponent({
       background-image: $card-bg-pattern;
       background-color: $card-inactive;
       background-size: $card-bg-pattern-size;
+      backface-visibility: hidden;
     }
 
     &.inactive {
@@ -174,15 +175,15 @@ export default defineComponent({
       }
     }
 
-    &.active {
+    &.active .front {
       background-color: $card-active;
     }
 
-    &.correct {
+    &.correct .front {
       background-color: $card-correct;
     }
 
-    &.incorrect {
+    &.incorrect .front {
       background-color: $card-incorrect;
     }
   }
