@@ -21,6 +21,7 @@
           :key="card.key"
           :card="card"
           :as-blank="card.key === 'blank'"
+          :data-test="card.key"
           @flip-card="selectCard"
         />
       </transition-group>
@@ -127,12 +128,12 @@ export default defineComponent({
       state.cards.push({
         emoji: emojis[emojiIndex],
         state: "inactive",
-        key: `card - ${i + magicNumber}`
+        key: `card-${i + magicNumber}`
       });
       state.cards.push({
         emoji: emojis[emojiIndex],
         state: "inactive",
-        key: `card - ${i + magicNumber + 1}`
+        key: `card-${i + magicNumber + 1}`
       });
     }
 
