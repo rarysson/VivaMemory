@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-test="victory-component">
     <header>
       <span class="icon">✅</span>
       <h1 class="title">Parabéns! Você conseguiu!</h1>

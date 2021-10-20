@@ -212,7 +212,9 @@ export default defineComponent({
       }
     });
 
-    randomizeCards();
+    if (process.env.NODE_ENV !== "test") {
+      randomizeCards();
+    }
 
     return {
       state,

@@ -25,7 +25,7 @@ npm run serve
 
 ## Testes
 
-Esse projeto possui testes unitários e testes e2e.
+Esse projeto possui testes unitários com [Jest](https://jestjs.io/) e testes e2e com [Cypress](https://www.cypress.io/).
 
 ### Testes unitários
 
@@ -39,6 +39,14 @@ Para saber a cobertura dos testes unitarios basta executar o seguinte comando:
 
 ```
 npm run test:unit:coverage
+```
+
+### Testes e2e
+
+Para executar os testes e2e é só executar o seguinte comando:
+
+```
+npm run test:e2e
 ```
 
 ## Licença

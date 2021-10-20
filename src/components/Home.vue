@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-test="home-component">
     <header>
       <img class="logo" src="@/assets/images/logo.svg" alt="vivamemory logo" />
     </header>
