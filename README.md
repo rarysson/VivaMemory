@@ -1,8 +1,8 @@
 # Viva Memory
 
-Um jogo para testar sua memória. Projeto baseado no [desafio da Viva Decora](https://github.com/vivadecora/desafio-frontend-jr-trabalhe-conosco).
+A memory game. Answer to the [Viva Decora challenge](https://github.com/vivadecora/desafio-frontend-jr-trabalhe-conosco).
 
-## Tecnologia usada
+## Stack
 
 * [Vue 3](https://vuejs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
@@ -12,43 +12,43 @@ Um jogo para testar sua memória. Projeto baseado no [desafio da Viva Decora](ht
 * [Jest](https://jestjs.io/)
 * [Cypress](https://www.cypress.io/)
 
-## Rodando o App
+## Using the App
 
-Para usar online acesse o link: [VivaMemory](https://rarysson.github.io/VivaMemory/).
+To use right away go here: [VivaMemory](https://rarysson.github.io/VivaMemory/).
 
-Para usar localmente basta clonar o projeto, e dentro da pasta executar os seguintes comandos:
+To run locally, you need to clone the repo, go to the folder that you've created and type these commands:
 
 ```
 npm i
 npm run serve
 ```
 
-## Testes
+## Tests
 
-Esse projeto possui testes unitários com [Jest](https://jestjs.io/) e testes e2e com [Cypress](https://www.cypress.io/).
+This project has unit tests made with [Jest](https://jestjs.io/) and e2e test made with [Cypress](https://www.cypress.io/).
 
-### Testes unitários
+### Unit tests
 
-Para executar os testes unitário é só executar o seguinte comando:
+To run the unit tests run this command:
 
 ```
 npm run test:unit
 ```
 
-Para saber a cobertura dos testes unitarios basta executar o seguinte comando:
+To know the coverage of the unit tests run this command:
 
 ```
 npm run test:unit:coverage
 ```
 
-### Testes e2e
+### e2e tests
 
-Para executar os testes e2e é só executar o seguinte comando:
+To run the e2e tests run this command:
 
 ```
 npm run test:e2e
 ```
 
-## Licença
+## License
 
 [MIT](LICENSE)
