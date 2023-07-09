@@ -2,12 +2,12 @@
   <div data-test="victory-component">
     <header>
       <span class="icon">✅</span>
-      <h1 class="title">Parabéns! Você conseguiu!</h1>
-      <p class="subtitle">Com {{ steps }} {{ stepsLabel }}</p>
+      <h1 class="title">Congrats! You won!</h1>
+      <p class="subtitle">With {{ steps }} {{ stepsLabel }}</p>
     </header>
 
     <main>
-      <button class="btn" @click="replay">Jogar novamente</button>
+      <button class="btn" @click="replay">Replay</button>
     </main>
 
     <footer>
@@ -43,7 +43,7 @@ export default defineComponent({
 
   setup(props, { emit }: SetupContext): ISetup {
     const stepsLabel = computed<string>(() =>
-      props.steps === 1 ? "movimento" : "movimentos"
+      props.steps === 1 ? "step" : "steps"
     );
 
     function replay(): void {

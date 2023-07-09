@@ -28,7 +28,7 @@
     </main>
 
     <footer>
-      <p>Nível:</p>
+      <p>Level:</p>
       <div
         class="current-level-display"
         :class="{ [difficulty]: !!difficulty }"
@@ -96,14 +96,14 @@ export default defineComponent({
     });
 
     const stepsLabel = computed<string>(() =>
-      state.steps === 1 ? "movimento" : "movimentos"
+      state.steps === 1 ? "step" : "steps"
     );
     const levelLabel = computed<string>(() =>
       props.difficulty === "easy"
-        ? "Fácil - 4"
+        ? "Easy - 4"
         : props.difficulty === "medium"
         ? "Normal - 8"
-        : "Difícil - 16"
+        : "Hard - 16"
     );
     const maximumUniqueCards = computed<number>(() =>
       props.difficulty === "easy" ? 2 : props.difficulty === "medium" ? 4 : 8

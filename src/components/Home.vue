@@ -5,11 +5,11 @@
     </header>
 
     <main>
-      <button class="btn easy" @click="selectLevel('easy')">👶 Fácil</button>
+      <button class="btn easy" @click="selectLevel('easy')">👶 Easy</button>
       <button class="btn medium" @click="selectLevel('medium')">
         👦 Normal
       </button>
-      <button class="btn hard" @click="selectLevel('hard')">🤯 Difícil</button>
+      <button class="btn hard" @click="selectLevel('hard')">🤯 Hard</button>
     </main>
   </div>
 </template>
